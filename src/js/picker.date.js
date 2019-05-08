@@ -7,16 +7,16 @@
 
     // AMD.
     if ( typeof define == 'function' && define.amd )
-        define( ['./picker', 'jquery'], factory )
+        define( ['./picker', './translations', 'jquery'], factory )
 
     // Node.js/browserify.
     else if ( typeof exports == 'object' )
-        module.exports = factory( require('./picker.js'), require('jquery') )
+        module.exports = factory( require('./picker.js'), require('./translations.js'), require('jquery') )
 
     // Browser globals.
-    else factory( Picker, jQuery )
+    else factory( Picker, PickerTranslations, jQuery )
 
-}(function( Picker, $ ) {
+}(function( Picker, PickerTranslations, $ ) {
 
 
 /**
@@ -51,6 +51,11 @@ function DatePicker( picker, settings ) {
         }
 
     calendar.settings = settings
+
+    if ('lang' in settings && settings.lang in PickerTranslations) {
+        jQuery.extend(calendar.settings, PickerTranslations[settings.lang]);
+    }
+
     calendar.$node = picker.$node
 
     // The queue of methods that will be used to build item objects.
