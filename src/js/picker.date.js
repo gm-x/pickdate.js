@@ -68,7 +68,6 @@ function DatePicker( picker, settings ) {
     // The component's item object.
     calendar.item = {}
 
-    calendar.item.clear = null
     calendar.item.disable = ( settings.disable || [] ).slice( 0 )
     calendar.item.enable = -(function( collectionDisabled ) {
         return collectionDisabled[ 0 ] === true ? collectionDisabled.shift() : -1
@@ -118,25 +117,25 @@ function DatePicker( picker, settings ) {
     // Bind some picker events.
     picker.
         on( 'render', function() {
-            picker.$root.find( '.' + settings.klass.selectMonth ).on( 'change', function() {
+            picker.$root.find( '.' + settings.classes.selectMonth ).on( 'change', function() {
                 var value = this.value
                 if ( value ) {
                     picker.set( 'highlight', [ picker.get( 'view' ).year, value, picker.get( 'highlight' ).date ] )
-                    picker.$root.find( '.' + settings.klass.selectMonth ).trigger( 'focus' )
+                    picker.$root.find( '.' + settings.classes.selectMonth ).trigger( 'focus' )
                 }
             })
-            picker.$root.find( '.' + settings.klass.selectYear ).on( 'change', function() {
+            picker.$root.find( '.' + settings.classes.selectYear ).on( 'change', function() {
                 var value = this.value
                 if ( value ) {
                     picker.set( 'highlight', [ value, picker.get( 'view' ).month, picker.get( 'highlight' ).date ] )
-                    picker.$root.find( '.' + settings.klass.selectYear ).trigger( 'focus' )
+                    picker.$root.find( '.' + settings.classes.selectYear ).trigger( 'focus' )
                 }
             })
         }, 1 ).
         on( 'open', function() {
             var includeToday = ''
             if ( calendar.disabled( calendar.get('now') ) ) {
-                includeToday = ':not(.' + settings.klass.buttonToday + ')'
+                includeToday = ':not(.' + settings.classes.buttonToday + ')'
             }
             picker.$root.find( 'button' + includeToday + ', select' ).attr( 'disabled', false )
         }, 1 ).
@@ -157,7 +156,6 @@ DatePicker.prototype.set = function( type, value, options ) {
 
     // If the value is `null` just set it immediately.
     if ( value === null ) {
-        if ( type == 'clear' ) type = 'select'
         calendarItem[ type ] = value
         return calendar
     }
@@ -396,7 +394,7 @@ DatePicker.prototype.normalize = function( value/*, options*/ ) {
 DatePicker.prototype.measure = function( type, value/*, options*/ ) {
 
     var calendar = this
-    
+
     // If it's an integer, get a date relative to today.
     if ( _.isInteger( value ) ) {
         value = calendar.now( type, value, { rel: value } )
@@ -1007,7 +1005,7 @@ DatePicker.prototype.nodes = function( isOpen ) {
                         item: function( counter ) {
                             return [
                                 collection[ counter ],
-                                settings.klass.weekdays,
+                                settings.classes.weekdays,
                                 'scope=col title="' + fullCollection[ counter ] + '"'
                             ]
                         }
@@ -1024,12 +1022,12 @@ DatePicker.prototype.nodes = function( isOpen ) {
             return _.node(
                 'div',
                 ' ',
-                settings.klass[ 'nav' + ( next ? 'Next' : 'Prev' ) ] + (
+                settings.classes[ 'nav' + ( next ? 'Next' : 'Prev' ) ] + (
 
                     // If the focused month is outside the range, disabled the button.
                     ( next && viewsetObject.year >= maxLimitObject.year && viewsetObject.month >= maxLimitObject.month ) ||
                     ( !next && viewsetObject.year <= minLimitObject.year && viewsetObject.month <= minLimitObject.month ) ?
-                    ' ' + settings.klass.navDisabled : ''
+                    ' ' + settings.classes.navDisabled : ''
                 ),
                 'data-nav=' + ( next || -1 ) + ' ' +
                 _.ariaAttr({
@@ -1075,7 +1073,7 @@ DatePicker.prototype.nodes = function( isOpen ) {
                             ]
                         }
                     }),
-                    settings.klass.selectMonth,
+                    settings.classes.selectMonth,
                     ( isOpen ? '' : 'disabled' ) + ' ' +
                     _.ariaAttr({ controls: calendar.$node[0].id + '_table' }) + ' ' +
                     'title="' + settings.labelMonthSelect + '"'
@@ -1083,7 +1081,7 @@ DatePicker.prototype.nodes = function( isOpen ) {
             }
 
             // If there's a need for a month selector
-            return _.node( 'div', monthsCollection[ viewsetObject.month ], settings.klass.month )
+            return _.node( 'div', monthsCollection[ viewsetObject.month ], settings.classes.month )
         }, //createMonthLabel
 
 
@@ -1141,14 +1139,14 @@ DatePicker.prototype.nodes = function( isOpen ) {
                             ]
                         }
                     }),
-                    settings.klass.selectYear,
+                    settings.classes.selectYear,
                     ( isOpen ? '' : 'disabled' ) + ' ' + _.ariaAttr({ controls: calendar.$node[0].id + '_table' }) + ' ' +
                     'title="' + settings.labelYearSelect + '"'
                 )
             }
 
             // Otherwise just return the year focused
-            return _.node( 'div', focusedYear, settings.klass.year )
+            return _.node( 'div', focusedYear, settings.classes.year )
         } //createYearLabel
 
 
@@ -1157,7 +1155,7 @@ DatePicker.prototype.nodes = function( isOpen ) {
         'div',
         ( settings.selectYears ? createYearLabel() + createMonthLabel() : createMonthLabel() + createYearLabel() ) +
         createMonthNav() + createMonthNav( 1 ),
-        settings.klass.header
+        settings.classes.header
     ) + _.node(
         'table',
         tableHead +
@@ -1198,30 +1196,30 @@ DatePicker.prototype.nodes = function( isOpen ) {
                                         (function( klasses ) {
 
                                             // Add the `infocus` or `outfocus` classes based on month in view.
-                                            klasses.push( viewsetObject.month == targetDate.month ? settings.klass.infocus : settings.klass.outfocus )
+                                            klasses.push( viewsetObject.month == targetDate.month ? settings.classes.infocus : settings.classes.outfocus )
 
                                             // Add the `today` class if needed.
                                             if ( nowObject.pick == targetDate.pick ) {
-                                                klasses.push( settings.klass.now )
+                                                klasses.push( settings.classes.now )
                                             }
 
                                             // Add the `selected` class if something's selected and the time matches.
                                             if ( isSelected ) {
-                                                klasses.push( settings.klass.selected )
+                                                klasses.push( settings.classes.selected )
                                             }
 
                                             // Add the `highlighted` class if something's highlighted and the time matches.
                                             if ( isHighlighted ) {
-                                                klasses.push( settings.klass.highlighted )
+                                                klasses.push( settings.classes.highlighted )
                                             }
 
                                             // Add the `disabled` class if something's disabled and the object matches.
                                             if ( isDisabled ) {
-                                                klasses.push( settings.klass.disabled )
+                                                klasses.push( settings.classes.disabled )
                                             }
 
                                             return klasses.join( ' ' )
-                                        })([ settings.klass.day ]),
+                                        })([ settings.classes.day ]),
                                         'data-pick=' + targetDate.pick + ' ' + _.ariaAttr({
                                             role: 'gridcell',
                                             label: formattedDate,
@@ -1239,7 +1237,7 @@ DatePicker.prototype.nodes = function( isOpen ) {
                 }
             })
         ),
-        settings.klass.table,
+        settings.classes.table,
         'id="' + calendar.$node[0].id + '_table' + '" ' + _.ariaAttr({
             role: 'grid',
             controls: calendar.$node[0].id,
@@ -1250,19 +1248,15 @@ DatePicker.prototype.nodes = function( isOpen ) {
     // * For Firefox forms to submit, make sure to set the buttons’ `type` attributes as “button”.
     _.node(
         'div',
-        _.node( 'button', settings.today, settings.klass.buttonToday,
+        _.node( 'button', settings.today, settings.classes.buttonToday,
             'type=button data-pick=' + nowObject.pick +
             ( isOpen && !calendar.disabled(nowObject) ? '' : ' disabled' ) + ' ' +
             _.ariaAttr({ controls: calendar.$node[0].id }) ) +
-        _.node( 'button', settings.clear, settings.klass.buttonClear,
-            'type=button data-clear=1' +
-            ( isOpen ? '' : ' disabled' ) + ' ' +
-            _.ariaAttr({ controls: calendar.$node[0].id }) ) +
-        _.node('button', settings.close, settings.klass.buttonClose,
+        _.node('button', settings.close, settings.classes.buttonClose,
             'type=button data-close=true ' +
             ( isOpen ? '' : ' disabled' ) + ' ' +
             _.ariaAttr({ controls: calendar.$node[0].id }) ),
-        settings.klass.footer
+        settings.classes.footer
     ) //endreturn
 } //DatePicker.prototype.nodes
 
@@ -1292,12 +1286,10 @@ DatePicker.defaults = (function( prefix ) {
 
         // Today and clear
         today: 'Today',
-        clear: 'Clear',
         close: 'Close',
 
         // Picker close behavior
         closeOnSelect: true,
-        closeOnClear: true,
 
         // Update input value on select/clear
         updateInput: true,
@@ -1306,7 +1298,7 @@ DatePicker.defaults = (function( prefix ) {
         format: 'd mmmm, yyyy',
 
         // Classes
-        klass: {
+        classes: {
 
             table: prefix + 'table',
 
@@ -1333,13 +1325,11 @@ DatePicker.defaults = (function( prefix ) {
             outfocus: prefix + 'day--outfocus',
 
             footer: prefix + 'footer',
-
-            buttonClear: prefix + 'button--clear',
             buttonToday: prefix + 'button--today',
             buttonClose: prefix + 'button--close'
         }
     }
-})( Picker.klasses().picker + '__' )
+})( Picker.classes().picker + '__' )
 
 
 

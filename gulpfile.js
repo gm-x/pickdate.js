@@ -16,7 +16,7 @@ function css() {
     return src(['src/css/base.less', 'src/css/base.date.less', 'src/css/default.less'])
         .pipe(less())
         .pipe(autoprefixer({
-            browsers: [ '> 5%', 'last 2 versions', 'ie 8', 'ie 9' ],
+            browsers: [ '> 5%', 'last 2 versions'],
             cascade: false
         }))
         .pipe(minifyCSS())

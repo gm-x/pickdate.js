@@ -18,7 +18,7 @@
     // Browser globals.
     else if ( typeof window == 'object' )
         window.Picker = factory( jQuery )
-    
+
     else this.Picker = factory( jQuery )
 
 }(function( $ ) {
@@ -54,7 +54,7 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
 
 
         // Merge the default classes with the settings classes.
-        CLASSES = $.extend( {}, PickerConstructor.klasses(), SETTINGS.klass ),
+        CLASSES = $.extend( {}, PickerConstructor.classes(), SETTINGS.klass ),
 
 
         // The element node wrapper into a jQuery object.
@@ -912,7 +912,7 @@ function PickerConstructor( ELEMENT, NAME, COMPONENT, OPTIONS ) {
 /**
  * The default classes and prefix to use for the HTML classes.
  */
-PickerConstructor.klasses = function( prefix ) {
+PickerConstructor.classes = function( prefix ) {
     prefix = prefix || 'picker'
     return {
 
@@ -931,7 +931,7 @@ PickerConstructor.klasses = function( prefix ) {
 
         box: prefix + '__box'
     }
-} //PickerConstructor.klasses
+} //PickerConstructor.classes
 
 
 
