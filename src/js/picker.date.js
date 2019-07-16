@@ -50,13 +50,15 @@ function DatePicker( picker, settings ) {
                 getComputedStyle( picker.$root[0] ).direction == 'rtl'
         }
 
-    calendar.settings = settings
+    calendar.settings = {};
 
     if ('lang' in settings && settings.lang in PickerTranslations) {
         jQuery.extend(calendar.settings, PickerTranslations[settings.lang]);
     }
 
-    calendar.$node = picker.$node
+    jQuery.extend(calendar.settings, settings);
+
+    calendar.$node = picker.$node;
 
     // The queue of methods that will be used to build item objects.
     calendar.queue = {

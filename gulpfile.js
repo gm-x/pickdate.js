@@ -9,7 +9,7 @@ function js() {
     return src(['src/js/picker.js', 'src/js/translations.js', 'src/js/picker.date.js'], { sourcemaps: true })
         .pipe(uglify())
         .pipe(concat('pickadate.min.js'))
-        .pipe(dest('dist/js', { sourcemaps: true }))
+        .pipe(dest('dist/js', { sourcemaps: false }))
 }
 
 function css() {

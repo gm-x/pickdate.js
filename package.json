@@ -32,7 +32,8 @@
     "prebump": "npm test",
     "bump": "node ./version-bump.js",
     "postbump": "npx grunt package && node ./version-commit.js",
-    "test": "npx grunt test --verbose"
+    "test": "npx grunt test --verbose",
+    "build": "npx gulp"
   },
   "dependencies": {
     "jquery": "^3.4.1"
